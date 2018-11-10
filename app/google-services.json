@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "247183569298",
+    "firebase_url": "https://appphotofeed.firebaseio.com",
+    "project_id": "appphotofeed",
+    "storage_bucket": "appphotofeed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247183569298:android:bbfb32903066a079",
+        "android_client_info": {
+          "package_name": "ghostl.com.photofeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247183569298-ci2ngn8vstde8bo4aqdi68copoq85nou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh2AQ1Keq3t_jMAYRBDLKezgaRQu3f87U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
