@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PhotoFeed</string>
+    <string name="login.message.email">Email</string>
+    <string name="login.message.password">Password</string>
+    <string name="login.message.signin">SIGNIN</string>
+    <string name="login.message.signup">SIGN UP</string>
+    <string name="login_error_message_sigin">Error Registrando</string>
+    <string name="login_error_message_sigup">Error Usuario</string>
 </resources>
