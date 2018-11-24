@@ -3,21 +3,26 @@ package ghostl.com.photofeed.login;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
+import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+import ghostl.com.photofeed.domain.FireBaseAPI;
+import ghostl.com.photofeed.domain.FirebaseActionListenerCallback;
 import ghostl.com.photofeed.libs.base.EventBus;
+import ghostl.com.photofeed.login.events.LoginEvent;
 
 public class LoginRepositoryImpl implements LoginRepository {
     private EventBus eventBus;
-    private FirebaseAPI firebase;
+    private FireBaseAPI firebase;
     private DatabaseReference databaseReference;
     private DatabaseReference myUserReference;
 
-    public LoginRepositoryImpl(EventBus eventBus, FirebaseAPI firebase) {
+    public LoginRepositoryImpl(EventBus eventBus, FireBaseAPI firebase) {
         this.eventBus = eventBus;
         this.firebase = firebase;
     }
@@ -28,7 +33,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        post(LoginEvent.onSigUpSuccess);
+                        post(LoginEvent.onSignUpSuccess);
                         signIn(email, password);
                     }
                 })
@@ -51,7 +56,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 String emial = firebase.getAuthEmail();
-                                post(LoginEvent.onSignInSucces, null, email);
+                                post(LoginEvent.onSignInSuccess, null, email);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -66,6 +71,17 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             firebase.checkForSession(new FirebaseActionListenerCallback(){
 
+                @Override
+                public void onSuccess() {
+                    String email = firebase.getAuthEmail();
+                    post(LoginEvent.onSignInSuccess, null, email);
+                }
+
+                @Override
+                public void onError(FirebaseError error) {
+                    post(LoginEvent.onFailedToRecoverSession);
+
+                }
             });
         }
     }
@@ -80,9 +96,9 @@ public class LoginRepositoryImpl implements LoginRepository {
 
     private void post(int type, String errorMessage, String loggerUserEmail) {
         LoginEvent loginEvent = new LoginEvent();
-        loginEvent.setEvenType(type);
+        loginEvent.setEventType(type);
         if(errorMessage != null){
-            loginEvent.setErroroMessage(errorMessage);
+            loginEvent.setErrorMessage(errorMessage);
         }
         loginEvent.setLoggedUserEmail(loggerUserEmail);
         eventBus.post(loginEvent);

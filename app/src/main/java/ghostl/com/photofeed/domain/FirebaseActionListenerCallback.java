@@ -1,6 +1,7 @@
 package ghostl.com.photofeed.domain;
 
-import com.google.firebase.FirebaseError;
+
+import com.firebase.client.FirebaseError;
 
 public interface FirebaseActionListenerCallback {
     void onSuccess();

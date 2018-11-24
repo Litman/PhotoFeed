@@ -1,6 +1,7 @@
-package ghostl.com.photofeed.login;
+package ghostl.com.photofeed.login.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ghostl.com.photofeed.PhotoFeedActivity;
 import ghostl.com.photofeed.R;
+import ghostl.com.photofeed.login.LoginPresenter;
+import ghostl.com.photofeed.PhotoFeedApp;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
@@ -25,10 +28,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     EditText etEmail;
     @Bind(R.id.etPassword)
     EditText etPassword;
-    @Bind(R.id.bSignin)
-    Button bSignin;
-    @Bind(R.id.bSignup)
-    Button bSignup;
+    @Bind(R.id.bSignIn)
+    Button bSignIn;
+    @Bind(R.id.bSignUp)
+    Button bSignUp;
     @Bind(R.id.pbLogin)
     ProgressBar pbLogin;
     @Bind(R.id.rlMainContainer)
@@ -47,15 +50,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
-        app = (PhotoFeedApp) getApplication();
+        app = (PhotoFeedApp) this.getApplication();
 
         setupInjection();
+        loginPresenter.onCreate();
         loginPresenter.login(null, null);
 
     }
 
     private void setupInjection() {
-        app.getLoginComponent();
+        app.getLoginComponent(this).inject(this);
     }
 
     @Override
@@ -66,15 +70,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    @OnClick(R.id.bSignin)
-    public void handleSignin(){
+    @OnClick(R.id.bSignIn)
+    public void handleSignIn(){
         loginPresenter.registerNewUser(etEmail.getText().toString(), etPassword.getText().toString());
     }
 
 
     @Override
-    @OnClick(R.id.bSignup)
-    public void handleSignup(){
+    @OnClick(R.id.bSignUp)
+    public void handleSignUp(){
         loginPresenter.login(etEmail.getText().toString(), etPassword.getText().toString());
     }
 
@@ -101,15 +105,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         pbLogin.setVisibility(View.GONE);
     }
 
-    @Override
-    public void handleSignUp() {
 
-    }
-
-    @Override
-    public void handleSignIn() {
-
-    }
 
     @Override
     public void newUserSuccess() {

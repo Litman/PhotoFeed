@@ -47,12 +47,12 @@
         android:layout_centerVertical="true">
         
         <Button
-            android:id="@+id/bSignin"
+            android:id="@+id/bSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              android:text="@string/login.message.signin"/>
         <Button
-            android:id="@+id/bSignup"
+            android:id="@+id/bSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login.message.signup"/>

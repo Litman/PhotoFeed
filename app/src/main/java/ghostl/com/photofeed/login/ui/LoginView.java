@@ -1,4 +1,4 @@
-package ghostl.com.photofeed.login;
+package ghostl.com.photofeed.login.ui;
 
 public interface LoginView {
 

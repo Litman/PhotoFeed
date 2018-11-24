@@ -2,7 +2,7 @@ package ghostl.com.photofeed.entities;
 
 public class Photo {
 
-    private int id;
+    private String id;
 
     private Boolean publishedByME;
 
@@ -11,13 +11,11 @@ public class Photo {
     private double latitude;
     private double longitude;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public Boolean getPublishedByME() {
         return publishedByME;

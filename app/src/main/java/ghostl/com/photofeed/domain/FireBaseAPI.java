@@ -1,18 +1,23 @@
 package ghostl.com.photofeed.domain;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
+
+
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ghostl.com.photofeed.entities.Photo;
 
@@ -28,18 +33,19 @@ public class FireBaseAPI {
 
     public void checkForData(final FirebaseActionListenerCallback listener){
         ValueEventListener postListener = new ValueEventListener() {
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getChildrenCount() > 0){
                     listener.onSuccess();
                 }else{
-                    listener.onError();
+                    listener.onError(null);
                 }
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("FIREBASE API", firebaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("FIREBASE API", databaseError.getMessage());
             }
         };
 
@@ -50,29 +56,30 @@ public class FireBaseAPI {
     public void subscribe(final FirebaseEventListenerCallback listener){
         if(photosEventListener == null){
             photosEventListener = new ChildEventListener() {
+
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    listener.onChildAdded(dataSnapShot);
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    listener.onChildAdded(dataSnapshot);
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    listener.onChildRemoved(dataSnapshot);
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 }
 
                 @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    listener.onCancelled(firebaseError);
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                    listener.onChildRemove(dataSnapshot);
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    listener.onCancelled(databaseError);
                 }
             };
         }
@@ -80,10 +87,13 @@ public class FireBaseAPI {
         mPhotoDatabaseReference.addChildEventListener(photosEventListener);
     }
 
-    public void unsubscribe(final Firebas){
+    public void unsubscribe(){
         mPhotoDatabaseReference.removeEventListener(photosEventListener);
     }
 
+    public String create(){
+        return firebase.push().getKey();
+    }
 
 
     public void update(Photo photo){
@@ -118,6 +128,34 @@ public class FireBaseAPI {
                 listener.onError(firebaseError);
             }
         });
+    }
+
+    public void login(String email, String password, final FirebaseActionListenerCallback listener){
+        firebase.authWithPassword(email, password, new Firebase.AuthResultHandler(){
+
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                listener.onSuccess();
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                listener.onError(firebaseError);
+            }
+        });
+    }
+
+    public void checkForSession(FirebaseActionListenerCallback listener){
+        if(firebase.getAuth() != null){
+            listener.onSuccess();
+        }else{
+            listener.onError(null);
+        }
+
+    }
+
+    public void logout(){
+        firebase.unauth();
     }
 
 }
