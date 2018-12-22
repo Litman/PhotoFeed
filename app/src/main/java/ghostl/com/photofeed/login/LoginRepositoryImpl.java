@@ -2,6 +2,7 @@ package ghostl.com.photofeed.login;
 
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.firebase.client.FirebaseError;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -17,6 +18,7 @@ import ghostl.com.photofeed.libs.base.EventBus;
 import ghostl.com.photofeed.login.events.LoginEvent;
 
 public class LoginRepositoryImpl implements LoginRepository {
+    private String TAG = LoginRepositoryImpl.class.getName();
     private EventBus eventBus;
     private FireBaseAPI firebase;
     private DatabaseReference databaseReference;
@@ -33,6 +35,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "Enter SignUp OK ");
                         post(LoginEvent.onSignUpSuccess);
                         signIn(email, password);
                     }
@@ -40,6 +43,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Enter SignUp Error ");
                         post(LoginEvent.onSignUpSuccess, e.getMessage());
 
                     }
@@ -55,7 +59,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                String emial = firebase.getAuthEmail();
+                                String email = firebase.getAuthEmail();
                                 post(LoginEvent.onSignInSuccess, null, email);
                             }
                         })

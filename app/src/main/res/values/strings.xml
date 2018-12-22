@@ -6,4 +6,11 @@
     <string name="login.message.signup">SIGN UP</string>
     <string name="login_error_message_sigin">Error Registrando</string>
     <string name="login_error_message_sigup">Error Usuario</string>
+    <string name="main.menu.action.logout">Logout</string>
+    <string name="main_title_list">Lista</string>
+    <string name="main_title_map">Mapa</string>
+    <string name="main_message_picture_source">PICTURE</string>
+    <string name="main_error_dispatch_camera">ERROR PHOTO</string>
+    <string name="main_notice_upload_init">START UPLOAD</string>
+    <string name="main_notice_upload_complete">UPLOAD COMPLETE</string>
 </resources>

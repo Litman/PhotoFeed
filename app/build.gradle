@@ -27,7 +27,7 @@ android {
             resValue "string", "GOOGLE_MAPS_API_KEY", project.property('GOOGLE_MAPS_API_KEY')
         }
     }
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/LICENSE'
@@ -44,6 +44,7 @@ dependencies {
     implementation "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
 
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.supportConstraintLayout"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
